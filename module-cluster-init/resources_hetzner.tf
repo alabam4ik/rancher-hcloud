@@ -95,6 +95,14 @@ resource "hcloud_load_balancer_target" "rancher_management_lb_targets" {
   depends_on       = [hcloud_load_balancer_network.rancher_management_lb_network_registration]
 }
 
+resource "hcloud_load_balancer_target" "rancher_management_lb_targets_labels" {
+  type             = "label_selector"
+  label_selector   = "cattle.io/creator"
+  load_balancer_id = hcloud_load_balancer.rancher_management_lb.id
+  use_private_ip   = false
+  depends_on       = [hcloud_load_balancer_network.rancher_management_lb_network_registration]
+}
+
 resource "hcloud_load_balancer_service" "rancher_management_lb_k8s_service" {
   load_balancer_id = hcloud_load_balancer.rancher_management_lb.id
   protocol         = "tcp"
